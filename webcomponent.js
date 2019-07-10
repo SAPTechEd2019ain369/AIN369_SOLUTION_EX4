@@ -52,6 +52,12 @@
             if (this._widgetHeight < this._widgetWidth){
                 this._widgetWidth = this._widgetHeight;
             }
+
+            //Adding event handler for click events
+			this.addEventListener("click", event => {
+				var event = new Event("onClick");
+				this.dispatchEvent(event);
+			});
             
             this.redraw();
         };
