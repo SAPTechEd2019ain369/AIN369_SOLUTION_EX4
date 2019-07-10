@@ -99,6 +99,11 @@
                 .attr("transform", "translate(" + this._outerRad + "," + this._outerRad + ")")
                 .attr("d", arcDef)
                 .attr( "fill-opacity", this._gaugeOpacity );
+
+            guageArc.addEventListener("click", event => {
+				var event = new Event("onClick");
+				this.dispatchEvent(event);
+			});
             
 
             ///////////////////////////////////////////	
