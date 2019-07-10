@@ -53,12 +53,6 @@
                 this._widgetWidth = this._widgetHeight;
             }
 
-            //Adding event handler for click events
-			this.addEventListener("click", event => {
-				var event = new Event("onClick");
-				this.dispatchEvent(event);
-			});
-            
             this.redraw();
         };
 
@@ -99,11 +93,6 @@
                 .attr("transform", "translate(" + this._outerRad + "," + this._outerRad + ")")
                 .attr("d", arcDef)
                 .attr( "fill-opacity", this._gaugeOpacity );
-
-            guageArc.addEventListener("click", event => {
-				var event = new Event("onClick");
-				this.dispatchEvent(event);
-			});
             
 
             ///////////////////////////////////////////	
@@ -142,6 +131,12 @@
                 .attr("stroke", this._ringColorCode)
                 .attr("stroke-width", this._bracketThickness)
                 .attr("fill", "none");	
+
+            //Adding event handler for click events
+			this.addEventListener("click", event => {
+				var event = new Event("onClick");
+				this.dispatchEvent(event);
+			});
 	
         };
 
