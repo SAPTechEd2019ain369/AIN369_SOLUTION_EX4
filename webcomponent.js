@@ -21,7 +21,14 @@
                 document.head.removeChild(d3Script);
             }
             catch{}
-            }
+        }
+
+        connectedCallback () {
+            const bcRect = this.getBoundingClientRect();
+            this._widgetHeight = bcRect.height;
+            this._widgetWidth = bcRect.width;
+            this.redraw();
+        }
     
         constructor() {
             super();
@@ -39,9 +46,6 @@
             this._endAngleDeg = 0.0;
             this._endAngleDegMax = 145.0;
             this._startAngleDeg = -145.0;
-            const bcRect = this.getBoundingClientRect();
-            this._widgetHeight = bcRect.height;
-            this._widgetWidth = bcRect.width;
             
             //Guide Lines
             this._ringColorCode = 'black';
@@ -49,18 +53,19 @@
             this._ringThickness = 5;
             this._bracketThickness = 5;
 
-            if (this._widgetHeight < this._widgetWidth){
-                this._widgetWidth = this._widgetHeight;
-            }
-
             //Adding event handler for click events
 			this.addEventListener("click", event => {
 				var event = new Event("onClick");
 				this.dispatchEvent(event);
             });
-            
-            this.redraw();
         };
+
+        onCustomWidgetResize(width, height) {
+            const bcRect = this.getBoundingClientRect();
+            this._widgetHeight = bcRect.height;
+            this._widgetWidth = bcRect.width;
+            this.redraw();
+        }
 
         //Getters and Setters
         get angleMax() {
@@ -77,7 +82,18 @@
         };
 
         redraw() {
+            if (this._widgetHeight < this._widgetWidth){
+                this._widgetWidth = this._widgetHeight;
+            }
+
             if (!this._svgContainer){
+                this._svgContainer = window._d3.select(this._shadowRoot)
+                .append("svg:svg")
+                .attr("id", "gauge")
+                .attr("width", this._widgetWidth)
+                .attr("height", this._widgetWidth);
+            } else{
+                window._d3.select(this._shadowRoot).selectAll("*").remove();
                 this._svgContainer = window._d3.select(this._shadowRoot)
                 .append("svg:svg")
                 .attr("id", "gauge")
